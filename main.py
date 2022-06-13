@@ -1,5 +1,6 @@
 from doctest import OutputChecker
 from email import header
+from multiprocessing.sharedctypes import Value
 import os
 import requests
 import urllib.request
@@ -51,8 +52,16 @@ for i in range(len(children)-1):
     
 # print(len(linkDict[titlearray[0]].values)) 
 
-# Create Directories for each Book
+# Create Directories for each Book and Generates Table of Contents .txt file
 outPutFolder = "Output"
+f = open('TOC.txt','w')
+string = ''
+for keys,values in linkDict.items():
+    string+= keys+":"+values.text.replace(':','-')
+    string+="---"
+f.write(string)
+f.close()
+quit()
 for keys in linkDict.keys():
     try:
         os.makedirs(outPutFolder+"/"+keys)
