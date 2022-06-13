@@ -61,32 +61,31 @@ for keys in linkDict.keys():
     #     continue
 
     headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) \
+            Chrome/39.0.2171.95 Safari/537.36'}
 
 
     for links in linkDict[keys].find_all('a'):
         #TODO: downloadcontent
         stuff = links.get('href')
         print(f'Downloading: {links.text} from {stuff}')
+        
+        # Download the content here and filters
         chapter = requests.get(links.get('href'),headers=headers)
         chapterraw = BeautifulSoup(chapter.text,"html.parser")
-        # Download the content here and filters
         chaptertext = chapterraw.find(class_='entry-content')
-        # textstuff = chaptertext.findChildren(class_= 'entry-content')
-
-        # chaptertext = chaptertext.findChild(class_ = 'entry-content')
         print(chaptertext.text)
 
         #Replaces illegal character
         chaptitle = links.text.replace(':','-')
+        
+        # Writes to .txt file
         f = open(chaptitle+".txt","w",encoding="utf-8")
         f.write(chaptitle + chaptertext.text)
         f.close
         break
-        print(links.text)
-        print(links.get('href'))
+
     break
 
-    #TODO: download contents here
 print("Folders created!")
-# download each book and compile to epub
+# compile to epub
